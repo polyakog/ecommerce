@@ -1,16 +1,41 @@
+import FormButton from "@/components/FormButton"
+import { prisma } from "@/lib/db/prisma"
 import { Metadata } from "next"
+import { redirect } from "next/navigation"
+
+
 
 export const metadata: Metadata = {
     title: 'Добавление продукта - Mozoni',
-    colorScheme: "dark"
+    // colorScheme: "dark"
 }
 
+async function addProduct(formData: FormData) {
+    "use server";
+  
+    const name = formData.get("name")?.toString();
+    const description = formData.get("description")?.toString();
+    const imageUrl = formData.get("imageUrl")?.toString();
+    const price = Number(formData.get("price") || 0);
+  
+    if (!name || !description || !imageUrl || !price) {
+      throw Error("Missing required fields");
+    }
+  
+    await prisma.products.create({
+      data: { name, description, imageUrl, price },
+    });
+  
+    redirect("/");
+  }
 
 const AddProduct = () => {
+
+ 
     return (
         <div>
             <h1 className="mb-3 font-bold text-lg">Добавление продукта</h1>
-            <form >
+            <form action={addProduct}>
                 <input
                     required
                     name="productName"
@@ -39,7 +64,8 @@ const AddProduct = () => {
                     className="input input-bordered mb-3 w-full"
                 />
 
-                <button className="btn btn-primary btn-block" type="submit">Добавить продукт</button>
+                <FormButton className="btn-block">Добавить продукт</FormButton>
+               
             </form>
         </div>
     )
