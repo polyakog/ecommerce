@@ -2,12 +2,14 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Mozoni',
   description: 'Вы будете довольны покупкой',
-  keywords: ["ecommerce", "lower prices", "nextjs"]
+  // keywords: ["ecommerce", "lower prices", "nextjs"],
+  // icons: {icon: './favicon.ico'}
 }
 
 export default function RootLayout({
