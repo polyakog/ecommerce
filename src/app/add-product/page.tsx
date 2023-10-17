@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 async function addProduct(formData: FormData) {
     "use server";
   
-    const name = formData.get("name")?.toString();
+    const name = formData.get("productName")?.toString();
     const description = formData.get("description")?.toString();
     const imageUrl = formData.get("imageUrl")?.toString();
     const price = Number(formData.get("price") || 0);
@@ -30,7 +30,6 @@ async function addProduct(formData: FormData) {
   }
 
 const AddProduct = () => {
-
  
     return (
         <div>

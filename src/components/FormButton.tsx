@@ -24,7 +24,7 @@ export default function FormButton({
             disabled={pending}
         >
             {pending &&
-                <span className="loading loading-ring loading-md"></span>
+                <span className="loading loading-ring loading-md"/>
             }
             {children}
         </button>
