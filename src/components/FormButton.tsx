@@ -1,7 +1,7 @@
 "use client"
 
 import { ComponentProps } from "react"
-import { experimental_useFormStatus as useFormStatus } from "react-dom"
+import { useFormStatus } from "react-dom"
 
 
 type FromButtonType = {
@@ -24,7 +24,7 @@ export default function FormButton({
             disabled={pending}
         >
             {pending &&
-                <span className="loading loading-ring loading-md"/>
+                <span className="loading loading-ring loading-md" />
             }
             {children}
         </button>
