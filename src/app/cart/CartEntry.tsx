@@ -61,7 +61,7 @@ const CartEntry = ({
                     </div>
                     <div className="flex items-center gap-3">
                         Всего: {formatPrice(product.price * quantity)}
-                        {isPending && <span className="loading loading-spinner loading-sm"/>}
+                        {isPending && <span className="loading loading-spinner loading-sm" />}
                     </div>
 
                 </div>
