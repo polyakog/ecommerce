@@ -1,7 +1,10 @@
 "use client"
 
 import { ComponentProps } from "react"
-import { useFormStatus } from "react-dom"
+
+// ts-ignore because experimental_useFormStatus is not in the types
+// @ts-ignore
+import { experimental_useFormStatus as useFormStatus } from "react-dom"
 
 
 type FromButtonType = {
