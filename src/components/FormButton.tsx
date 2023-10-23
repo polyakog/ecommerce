@@ -1,6 +1,9 @@
 "use client"
 
 import { ComponentProps } from "react"
+
+// ts-ignore because experimental_useFormStatus is not in the types
+// @ts-ignore
 import { experimental_useFormStatus as useFormStatus } from "react-dom"
 
 
@@ -24,7 +27,7 @@ export default function FormButton({
             disabled={pending}
         >
             {pending &&
-                <span className="loading loading-ring loading-md"/>
+                <span className="loading loading-ring loading-md" />
             }
             {children}
         </button>
