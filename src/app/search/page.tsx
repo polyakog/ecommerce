@@ -1,8 +1,18 @@
 import ProductCard from "@/components/ProudctCard"
 import { prisma } from "@/lib/db/prisma"
+import { Metadata } from "next"
 
 type SearchPropsType = {
     searchParams: { query: string }
+}
+
+export const generateMetadata = ({
+    searchParams: { query}
+}:SearchPropsType): Metadata =>{
+return {
+    title:`Поиск: ${query} - Mozoni`
+}
+
 }
 
 
