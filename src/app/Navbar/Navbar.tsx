@@ -11,17 +11,18 @@ import { authOptions } from "../api/auth/[...nextauth]/route"
 const searchProduct = async (formData: FormData) => {
     "use server"
 
-    const serachQuery = formData.get("searchQuery")?.toString()
+    const searchQuery = formData.get("searchQuery")?.toString()
 
-    if (serachQuery) {
-        redirect(`/search?query=${serachQuery}`)
-        // console.log(serachQuery)
+    if (searchQuery) {
+        const newSearchQuaery = encodeURIComponent(searchQuery) // кодируем в русский текст
+        redirect(`/search?query=${newSearchQuaery}`)
+        // console.log(searchQuery)
     }
 }
 
 const Navbar = async () => {
-const session = await getServerSession(authOptions)
-const cart = await getCart()
+    const session = await getServerSession(authOptions)
+    const cart = await getCart()
 
     return (
         <div className="bg-base-100">
@@ -47,8 +48,8 @@ const cart = await getCart()
                             />
                         </div>
                     </form>
-                    <ShoppingCartButton cart={cart}/>
-                    <UserMenuButton session={session}/>
+                    <ShoppingCartButton cart={cart} />
+                    <UserMenuButton session={session} />
                 </div>
             </div>
         </div>
