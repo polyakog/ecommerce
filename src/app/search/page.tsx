@@ -1,0 +1,37 @@
+import ProductCard from "@/components/ProudctCard"
+import { prisma } from "@/lib/db/prisma"
+
+type SearchPropsType = {
+    searchParams: { query: string }
+}
+
+
+const Search = async ({ searchParams: { query } }: SearchPropsType) => {
+ 
+    const products = await prisma.product.findMany({
+        where: {
+            OR: [
+                { name: { contains: query, mode: "insensitive" } },
+                { description: { contains: query, mode: "insensitive" } }
+            ]
+        },
+        orderBy: { id: "desc" }
+    })
+
+    if (products.length === 0) {
+        return <div className="text-center">Нет продуктов соответствующих поиску</div>
+    }
+
+    return (
+        <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4'>
+            {products.map(product => (
+                <ProductCard product={product} key={product.id} />
+            ))}
+
+            Параметр запроса: {query}
+        </div>
+    )
+
+}
+
+export default Search
