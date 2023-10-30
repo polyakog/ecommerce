@@ -1,22 +1,67 @@
-import React from "react"
+import React, { useEffect, useRef } from "react"
 import { Product } from '@prisma/client';
 import Image from 'next/image'
 import PriceTag from "@/components/PriceTag";
 import Link from 'next/link';
+import { SlectedProductType } from "./ProductTable";
+
 
 
 
 type ProductPropsType = {
     product: Product
+    selectedProduct: SlectedProductType[] | undefined
+    setSelectedProduct: (selectedProduct: SlectedProductType[]) => void
+    selectedAll: boolean
 }
 
-const ProductList = ({ product }: ProductPropsType) => {
+const ProductList = ({ product, selectedProduct, setSelectedProduct, selectedAll }: ProductPropsType) => {
+
+    const ref = useRef<HTMLInputElement>(null)
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const addProduct = (selectedProduct ? selectedProduct : [])
+        if (e.currentTarget.checked) {
+
+            let setAddProduct = [...addProduct, { productId: e.currentTarget.value }]
+            setSelectedProduct(setAddProduct)
+            console.log('setAddProduct=', setAddProduct)
+        } else {
+            let setAddProduct = addProduct.filter(p => {
+                return p.productId !== e.currentTarget.value
+            })
+            setSelectedProduct(setAddProduct);
+            console.log('setAddProduct=', setAddProduct)
+        }
+
+    }
+
+    useEffect(() => {
+
+        if (ref.current !== null) {
+            if (selectedAll) {
+                ref.current.checked = true
+            } else ref.current.checked = false
+        }
+
+
+    }, [selectedAll])
+
+
+
 
     return (
         <tr>
             <th>
                 <label>
-                    <input type="checkbox" className="checkbox" />
+                    <input
+                        type="checkbox"
+                        className="checkbox"
+                        value={product.id}
+                        onChange={handleChange}
+                        ref={ref}
+                        name="productCheck"
+                    />
                 </label>
             </th>
             <td>
