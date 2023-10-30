@@ -1,5 +1,8 @@
 import { prisma } from "@/lib/db/prisma"
 import ProductTable from './ProductTable';
+import { getServerSession } from "next-auth"
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation"
 
 
 export const metadata = {
@@ -8,6 +11,12 @@ export const metadata = {
 
 
 const Admin = async () => {
+
+    const session = await getServerSession(authOptions)
+
+     if (session?.user?.email !== "gpolyakov77@gmail.com") {
+        redirect("/")
+     }
 
     let products = await prisma.product.findMany({
         orderBy: { id: "desc" }
