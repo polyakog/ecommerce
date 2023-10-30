@@ -4,6 +4,7 @@ import { Session } from "next-auth"
 import Image from "next/image"
 import profilePicPlaceholder from "@/assets/profile-pic-placeholder.png"
 import { signIn, signOut } from "next-auth/react"
+import Link from "next/link"
 
 type UserMenuButtonPropsType = {
     session: Session | null
@@ -44,15 +45,23 @@ const UserMenuButton = ({ session }: UserMenuButtonPropsType) => {
                 }
             </label>
             <ul
-            tabIndex={0}
-            className="dropdown-content menu rounded-box menu-sm z-30 mt-3 w-52 bg-base-100 p-2 shadow"
+                tabIndex={0}
+                className="dropdown-content menu rounded-box menu-sm z-30 mt-3 w-52 bg-base-100 p-2 shadow"
             >
+                <li className={user?.email !== "gpolyakov77@gmail.com" ? "disabled" : ""}>
+                    <Link
+                        href={"/admin"}
+                        className={user?.email !== "gpolyakov77@gmail.com" ? "pointer-events-none" : ""}
+                        tabIndex={0}
+                    >
+                        Настройки
+                    </Link>
+                </li>
                 <li>
-                    {user ? 
-                    <button onClick={()=>signOut({callbackUrl:"/"})}>Выйти</button>
-                    : <button onClick={()=>signIn()}>Войти</button>
-
-                }
+                    {user ?
+                        <button onClick={() => signOut({ callbackUrl: "/" })}>Выйти</button>
+                        : <button onClick={() => signIn()}>Войти</button>
+                    }
                 </li>
 
             </ul>
