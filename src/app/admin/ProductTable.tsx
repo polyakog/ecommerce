@@ -4,6 +4,7 @@ import { Product } from "@prisma/client"
 import ProductList from "./Product"
 import Link from 'next/link';
 import DeleteModal from "@/components/DeleteModal";
+import DeleteApproveModal from "@/components/DeleteApproveModal";
 
 type ProudctTablePropsType = {
     products: Product[]
@@ -19,6 +20,7 @@ const ProductTable = ({ products }: ProudctTablePropsType) => {
     const [selectedProduct, setSelectedProduct] = useState<SlectedProductType[]>()
     const [selectedAll, setSelectedAll] = useState(false)
     const [isModal, setIsModal] = useState(false)
+    const [isApproveModal, setIsApproveModal] = useState(false)
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -44,7 +46,8 @@ const ProductTable = ({ products }: ProudctTablePropsType) => {
 
     return (
         <>
-           {isModal && <DeleteModal setIsModal={setIsModal} />} 
+           {isModal && <DeleteModal numberSelected={selectedProduct?.length || 0} setIsModal={setIsModal}  setIsApproveModal={setIsApproveModal}/>} 
+           {isApproveModal && <DeleteApproveModal selectedProduct={selectedProduct || []} products={products} setIsApproveModal={setIsApproveModal}/>} 
 
             <div className=" card rounded-lg w-auto bg-base-100 shadow-xl mt-2">
 
@@ -63,7 +66,7 @@ const ProductTable = ({ products }: ProudctTablePropsType) => {
                             :
                             <>
                                 <div className="flex gap-3 items-center mt-2">
-                                    <span className="ml-5 text-white"> {selectedProduct?.length} выделен</span>
+                                    <span className="ml-5 text-white"> {selectedProduct?.length} {selectedProduct?.length===1? "выделен": "выделено"} </span>
                                     <button
                                         className="btn btn-warning btn-xs sm:btn-sm md:btn-md lg:btn-md "
                                         onClick={() => {
