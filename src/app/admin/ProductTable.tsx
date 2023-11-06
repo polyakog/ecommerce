@@ -10,14 +10,10 @@ type ProudctTablePropsType = {
     products: Product[]
 }
 
-export type SlectedProductType = {
-    productId: string
-}
-
 
 const ProductTable = ({ products }: ProudctTablePropsType) => {
 
-    const [selectedProduct, setSelectedProduct] = useState<SlectedProductType[]>()
+    const [selectedProduct, setSelectedProduct] = useState<string[]>()
     const [selectedAll, setSelectedAll] = useState(false)
     const [isModal, setIsModal] = useState(false)
     const [isApproveModal, setIsApproveModal] = useState(false)
@@ -26,12 +22,12 @@ const ProductTable = ({ products }: ProudctTablePropsType) => {
 
         if (e.currentTarget.checked) {
 
-            let setAddProduct = products.map(p => ({ productId: p.id }))
+            let setAddProduct = products.map(p => (p.id))
             setSelectedAll(true)
             setSelectedProduct(setAddProduct)
             // console.log('setAddProduct=', setAddProduct)
         } else {
-            let setAddProduct: SlectedProductType[] = []
+            let setAddProduct: string[] = []
             setSelectedAll(false)
             setSelectedProduct(setAddProduct);
             // console.log('setAddProduct=', setAddProduct)
@@ -47,7 +43,7 @@ const ProductTable = ({ products }: ProudctTablePropsType) => {
     return (
         <>
            {isModal && <DeleteModal numberSelected={selectedProduct?.length || 0} setIsModal={setIsModal}  setIsApproveModal={setIsApproveModal}/>} 
-           {isApproveModal && <DeleteApproveModal selectedProduct={selectedProduct || []} products={products} setIsApproveModal={setIsApproveModal}/>} 
+           {isApproveModal && <DeleteApproveModal selectedProduct={selectedProduct || []} setIsApproveModal={setIsApproveModal} setSelectedProduct={setSelectedProduct}/>} 
 
             <div className=" card rounded-lg w-auto bg-base-100 shadow-xl mt-2">
 
