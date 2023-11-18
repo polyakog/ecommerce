@@ -1,25 +1,49 @@
 import { prisma } from "@/lib/db/prisma"
 
 import { Product } from "@prisma/client"
-import React from "react"
+import React, { useEffect } from "react"
 
 type PropsType = {
-    selectedProduct: string[]
+    selectedProducts: string[]
     setIsApproveModal: (isApproveModal: boolean) => void
-    setSelectedProduct: (selectedProduct: string[]) => void
+    setSelectedProducts: (selectedProduct: string[]) => void
 
 }
 
-const DeleteApproveModal = ({ selectedProduct, setIsApproveModal, setSelectedProduct }: PropsType) => {
+const DeleteApproveModal = ({ selectedProducts, setIsApproveModal, setSelectedProducts }: PropsType) => {
 
-    const numberSelected = selectedProduct?.length || 0
+    const numberSelected = selectedProducts?.length || 0
 
     const handleDelete = async () => {
-        setIsApproveModal(false)
+        // setIsApproveModal(false)
 
 
+        await prisma.cartItem.deleteMany({
+            where: {
+                productId: selectedProducts[0]
+            }
+        })
+
+        // const deleteCartItem = prisma.cartItem.deleteMany({
+        //     where: {
+        //         productId: selectedProducts[0]
+        //     }
+        // })
+
+        // const deleteProduct = prisma.product.delete({
+        //     where: {
+        //         id: selectedProducts[0]
+        //     }
+        // })
+
+    // console.log(deleteCartItem)
+    // console.log(deleteProduct) 
+
+    // await prisma.$transaction([deleteCartItem, deleteProduct])
+    
+          
         
-            // await prisma.product.deleteMany({
+        // await prisma.product.deleteMany({
             //     where: { 
             //         id: {
             //         in: selectedProduct    
@@ -27,9 +51,19 @@ const DeleteApproveModal = ({ selectedProduct, setIsApproveModal, setSelectedPro
             //     }
             // })
        
-        setSelectedProduct([])
+        setSelectedProducts([])
+console.log('deleting selected products')
+console.table(selectedProducts)
 
     }
+
+    
+    useEffect(()=>{
+        console.log(selectedProducts)
+
+    },[selectedProducts])
+
+    
     return (
         <>
             <div

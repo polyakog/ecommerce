@@ -13,7 +13,7 @@ type ProudctTablePropsType = {
 
 const ProductTable = ({ products }: ProudctTablePropsType) => {
 
-    const [selectedProduct, setSelectedProduct] = useState<string[]>()
+    const [selectedProducts, setSelectedProducts] = useState<string[]>()
     const [selectedAll, setSelectedAll] = useState(false)
     const [isModal, setIsModal] = useState(false)
     const [isApproveModal, setIsApproveModal] = useState(false)
@@ -24,12 +24,12 @@ const ProductTable = ({ products }: ProudctTablePropsType) => {
 
             let setAddProduct = products.map(p => (p.id))
             setSelectedAll(true)
-            setSelectedProduct(setAddProduct)
+            setSelectedProducts(setAddProduct)
             // console.log('setAddProduct=', setAddProduct)
         } else {
             let setAddProduct: string[] = []
             setSelectedAll(false)
-            setSelectedProduct(setAddProduct);
+            setSelectedProducts(setAddProduct);
             // console.log('setAddProduct=', setAddProduct)
         }
 
@@ -37,20 +37,20 @@ const ProductTable = ({ products }: ProudctTablePropsType) => {
 
 
 
-    const classTableTop = `${selectedProduct?.length ? " bg-slate-400 rounded-t-lg" : ""} pb-2 border-b-2 border-gray-800 `
+    const classTableTop = `${selectedProducts?.length ? " bg-slate-400 rounded-t-lg" : ""} pb-2 border-b-2 border-gray-800 `
 
 
     return (
         <>
-           {isModal && <DeleteModal numberSelected={selectedProduct?.length || 0} setIsModal={setIsModal}  setIsApproveModal={setIsApproveModal}/>} 
-           {isApproveModal && <DeleteApproveModal selectedProduct={selectedProduct || []} setIsApproveModal={setIsApproveModal} setSelectedProduct={setSelectedProduct}/>} 
+           {isModal && <DeleteModal numberSelected={selectedProducts?.length || 0} setIsModal={setIsModal}  setIsApproveModal={setIsApproveModal}/>} 
+           {isApproveModal && <DeleteApproveModal selectedProducts={selectedProducts || []} setIsApproveModal={setIsApproveModal} setSelectedProducts={setSelectedProducts}/>} 
 
             <div className=" card rounded-lg w-auto bg-base-100 shadow-xl mt-2">
 
                 {/* панель удаления и добавления */}
                 <div className={classTableTop}>
                     {
-                        !selectedProduct || selectedProduct?.length === 0 ?
+                        !selectedProducts || selectedProducts?.length === 0 ?
                             <div className="flex justify-end mt-2 mr-2">
                                 <Link
                                     href={"/add-product"}
@@ -62,7 +62,7 @@ const ProductTable = ({ products }: ProudctTablePropsType) => {
                             :
                             <>
                                 <div className="flex gap-3 items-center mt-2">
-                                    <span className="ml-5 text-white"> {selectedProduct?.length} {selectedProduct?.length===1? "выделен": "выделено"} </span>
+                                    <span className="ml-5 text-white"> {selectedProducts?.length} {selectedProducts?.length===1? "выделен": "выделено"} </span>
                                     <button
                                         className="btn btn-warning btn-xs sm:btn-sm md:btn-md lg:btn-md "
                                         onClick={() => {
@@ -102,7 +102,7 @@ const ProductTable = ({ products }: ProudctTablePropsType) => {
                         <tbody>
                             {/* тело табилцы */}
                             {products.map(p => (
-                                <ProductList product={p} selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct} selectedAll={selectedAll} key={p.id} />
+                                <ProductList product={p} selectedProduct={selectedProducts} setSelectedProduct={setSelectedProducts} selectedAll={selectedAll} key={p.id} />
                             ))}
 
 
