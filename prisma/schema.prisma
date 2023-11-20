@@ -33,8 +33,8 @@ model Cart {
 
 model CartItem {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  productId String?  @db.ObjectId
-  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String  @db.ObjectId
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   quantity  Int
   cartId    String  @db.ObjectId
   cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)

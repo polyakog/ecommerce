@@ -2,6 +2,7 @@ import { prisma } from "@/lib/db/prisma"
 
 import { Product } from "@prisma/client"
 import React, { useEffect } from "react"
+import DeleteButton from "./DeleteButton"
 
 type PropsType = {
     selectedProducts: string[]
@@ -90,12 +91,11 @@ console.table(selectedProducts)
                         >
                             Отменить
                         </button>
-                        <button
-                            className="btn btn-sm btn-outline text-white"
-                            onClick={handleDelete}
-                        >
-                            Удалить
-                        </button>
+                       <DeleteButton 
+                       selectedProducts={selectedProducts} 
+                       setIsApproveModal={setIsApproveModal}
+                       setSelectedProducts={setSelectedProducts}
+                       />
                     </div>
                 </div>
             </div>
