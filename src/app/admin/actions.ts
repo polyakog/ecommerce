@@ -1,9 +1,14 @@
 
 'use server'
 
+import { revalidatePath } from 'next/cache';
 import { prisma } from './../../lib/db/prisma';
 
-export const deleteProduct = async (selectedPoductId: string)=> {
+export const deleteProduct = async (
+    selectedPoductId: string, 
+    
+    
+    )=> {
   let product = null
     product = await prisma.product.delete({
         where: {
@@ -11,5 +16,9 @@ export const deleteProduct = async (selectedPoductId: string)=> {
         }
     })
     
+       revalidatePath("/admin")  
+        
+    
 return product
+
 }

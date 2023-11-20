@@ -1,9 +1,8 @@
 "use client"
 
-
 import { deleteProduct } from "@/app/admin/actions"
-import { prisma } from "@/lib/db/prisma"
-import { ComponentProps } from "react"
+import { redirect } from "next/navigation"
+import { ComponentProps, useState } from "react"
 
 
 
@@ -24,52 +23,36 @@ const DeleteButton = async ({
     ...props
 }: DeleteButtonType) => {
 
+    const [disabledButton, setDisabledButton] = useState(false)
 
 
     const handleDelete = () => {
-        setIsApproveModal(false)
+        setDisabledButton(true)
         console.log('deleting selected products')
         console.table(selectedProducts)
 
-        deleteProduct('65311e7eafcd16845cfb1452')
-        console.log('deleting done 65311e7eafcd16845cfb1452')
+        selectedProducts.forEach(async (product, i, a) => {
+            if (i === a.length - 1) {
+                setTimeout(() => {
+                    setIsApproveModal(false)
+                    setSelectedProducts([])
+                }, 5000);
+            }
 
-        // await prisma.product.delete({
-        //     where: {
-        //         id: '65311e7eafcd16845cfb1454'
-        //     }
-        // })
-
-
-
-        // const deleteCartItem = prisma.cartItem.deleteMany({
-        //     where: {
-        //         productId: selectedProducts[0]
-        //     }
-        // })
-
-        // const deleteProduct = prisma.product.delete({
-        //     where: {
-        //         id: selectedProducts[0]
-        //     }
-        // })
-
-        // console.log(deleteCartItem)
-        // console.log(deleteProduct) 
-
-        // await prisma.$transaction([deleteCartItem, deleteProduct])
+            await deleteProduct(product)
+            console.log(`DELETED: ${product}`)
 
 
 
-        // await prisma.product.deleteMany({
-        //     where: { 
-        //         id: {
-        //         in: selectedProduct    
-        //         }
-        //     }
-        // })
+        })
 
-        setSelectedProducts([])
+
+
+
+
+
+
+
 
 
     }
@@ -80,7 +63,7 @@ const DeleteButton = async ({
             {...props}
             className={`btn btn-primary ${className}`}
             type="button"
-            disabled={false}
+            disabled={disabledButton}
             onClick={handleDelete}
         >
             Удалить

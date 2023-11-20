@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import { Product } from "@prisma/client"
-import ProductList from "./Product"
+import ProductList from "./ProductList"
 import Link from 'next/link';
 import DeleteModal from "@/components/DeleteModal";
 import DeleteApproveModal from "@/components/DeleteApproveModal";
@@ -25,12 +25,12 @@ const ProductTable = ({ products }: ProudctTablePropsType) => {
             let setAddProduct = products.map(p => (p.id))
             setSelectedAll(true)
             setSelectedProducts(setAddProduct)
-            // console.log('setAddProduct=', setAddProduct)
+            
         } else {
             let setAddProduct: string[] = []
             setSelectedAll(false)
             setSelectedProducts(setAddProduct);
-            // console.log('setAddProduct=', setAddProduct)
+            
         }
 
     }

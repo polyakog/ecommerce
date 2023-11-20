@@ -14,50 +14,6 @@ type PropsType = {
 const DeleteApproveModal = ({ selectedProducts, setIsApproveModal, setSelectedProducts }: PropsType) => {
 
     const numberSelected = selectedProducts?.length || 0
-
-    const handleDelete = async () => {
-        // setIsApproveModal(false)
-
-
-        await prisma.cartItem.deleteMany({
-            where: {
-                productId: selectedProducts[0]
-            }
-        })
-
-        // const deleteCartItem = prisma.cartItem.deleteMany({
-        //     where: {
-        //         productId: selectedProducts[0]
-        //     }
-        // })
-
-        // const deleteProduct = prisma.product.delete({
-        //     where: {
-        //         id: selectedProducts[0]
-        //     }
-        // })
-
-    // console.log(deleteCartItem)
-    // console.log(deleteProduct) 
-
-    // await prisma.$transaction([deleteCartItem, deleteProduct])
-    
-          
-        
-        // await prisma.product.deleteMany({
-            //     where: { 
-            //         id: {
-            //         in: selectedProduct    
-            //         }
-            //     }
-            // })
-       
-        setSelectedProducts([])
-console.log('deleting selected products')
-console.table(selectedProducts)
-
-    }
-
     
     useEffect(()=>{
         console.log(selectedProducts)
@@ -92,6 +48,7 @@ console.table(selectedProducts)
                             Отменить
                         </button>
                        <DeleteButton 
+                       className="btn btn-sm"
                        selectedProducts={selectedProducts} 
                        setIsApproveModal={setIsApproveModal}
                        setSelectedProducts={setSelectedProducts}
