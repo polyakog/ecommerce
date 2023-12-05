@@ -14,7 +14,7 @@ type DeleteButtonType = {
     setIsApproveModal: (IsAppoveModal: boolean) => void
 } & ComponentProps<"button">
 
-const DeleteButton = async ({
+const DeleteButton = ({
     children,
     className,
     selectedProducts,
