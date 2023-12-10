@@ -5,6 +5,7 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation"
 
 
+
 export const metadata = {
     title: "Кабинет администратора - Mozoni"
 }
@@ -29,10 +30,8 @@ const Admin = async () => {
             <h1 className="mb-4 font-bold text-lg">Страница администратора</h1>
 
             <h2 className="font-bold text-base text-center">Продукты</h2>
-            
-           <ProductTable products={products}/>
-
- 
+                      
+           <ProductTable products={products}/> 
 
         </div>
     )

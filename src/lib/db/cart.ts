@@ -49,7 +49,7 @@ export const getCart = async (): Promise<ShoppingCartType | null> => {
         ...cart,
         size: cart.items.reduce((acc, item) =>  acc + item.quantity, 0),
         subtotal: cart.items.reduce(
-            (acc, item)=> acc + item.quantity * item.product.price, 0
+            (acc, item)=> acc + item.quantity * item.product!.price, 0
             )
 
     }

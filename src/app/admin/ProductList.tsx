@@ -1,36 +1,41 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Product } from '@prisma/client';
 import Image from 'next/image'
 import PriceTag from "@/components/PriceTag";
 import Link from 'next/link';
-import { SlectedProductType } from "./ProductTable";
+
 
 
 
 
 type ProductPropsType = {
     product: Product
-    selectedProduct: SlectedProductType[] | undefined
-    setSelectedProduct: (selectedProduct: SlectedProductType[]) => void
+    selectedProduct: string[] | undefined
+    setSelectedProduct: (selectedProduct: string[]) => void
     selectedAll: boolean
 }
 
 const ProductList = ({ product, selectedProduct, setSelectedProduct, selectedAll }: ProductPropsType) => {
 
     const ref = useRef<HTMLInputElement>(null)
+    const [classRowSelected, setClassRowSelected] = useState<string>("")
+
+   
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const addProduct = (selectedProduct ? selectedProduct : [])
         if (e.currentTarget.checked) {
 
-            let setAddProduct = [...addProduct, { productId: e.currentTarget.value }]
+            let setAddProduct = [...addProduct, e.currentTarget.value]
             setSelectedProduct(setAddProduct)
+            setClassRowSelected("bg-slate-300")
             console.log('setAddProduct=', setAddProduct)
         } else {
             let setAddProduct = addProduct.filter(p => {
-                return p.productId !== e.currentTarget.value
+                return p !== e.currentTarget.value
             })
             setSelectedProduct(setAddProduct);
+            setClassRowSelected("")
             console.log('setAddProduct=', setAddProduct)
         }
 
@@ -41,17 +46,21 @@ const ProductList = ({ product, selectedProduct, setSelectedProduct, selectedAll
         if (ref.current !== null) {
             if (selectedAll) {
                 ref.current.checked = true
-            } else ref.current.checked = false
+                setClassRowSelected("bg-slate-300")
+            } else {
+                ref.current.checked = false
+                setClassRowSelected("")
+            }
         }
-
 
     }, [selectedAll])
 
 
 
 
+
     return (
-        <tr>
+        <tr className={classRowSelected}>
             <th>
                 <label>
                     <input
