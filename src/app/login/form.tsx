@@ -1,31 +1,25 @@
 'use client'
 
 import FormButton from "@/components/FormButton"
+import { signIn } from "next-auth/react"
 
-const Form = () => {
+const LoginForm = () => {
 
     const handleSubmit = async (formData: FormData) => {
-        // "use server"
-    
+            
         const email = formData.get("email"?.toString())
         const password = formData.get("password"?.toString())
-        const repassword = formData.get("repassword"?.toString())
-    
-        if (!email || !password || !repassword) {
+         
+        if (!email || !password) {
             throw Error("Не заполнены обзятельные поля")
-        } else if (password !== repassword) {
-            throw Error("Не совпадает повторный пароль")
-        }
+        } 
     
-        const responce = await fetch(`/api/auth/register`, {
-            method: `POST`,
-            body: JSON.stringify({
-                email: email,
-                password: password
-            })
+        signIn('credentials', {
+            email: email,
+            password: password,
+            redirect: false,
+
         })
-    
-        // console.log('responce form', {responce})
     
     }
 
@@ -48,19 +42,12 @@ const Form = () => {
                 type="password"
             />
 
-            <input
-                required
-                name="repassword"
-                className="input input-bordered w-full mb-3 max-w-xs"
-                placeholder="введите повторно пароль"
-                type="password"
-            />
-
-            <FormButton className="w-full max-w-xs">Зарегистрировать</FormButton>
+          
+            <FormButton className="w-full max-w-xs">Войти</FormButton>
 
         </form>
     )
 
 }
 
-export default Form
+export default LoginForm
