@@ -10,7 +10,7 @@ import { env } from "@/lib/env"
 import { mergeAnonymousCartIntoUserCart } from "@/lib/db/cart"
 import { sql } from "@vercel/postgres"
 import { compare } from "bcrypt"
-import async from './../../../page';
+
 
 type UserType = {
   id: string
@@ -37,6 +37,7 @@ export const authOptions: NextAuthOptions = {
     //   clientSecret: process.env.MAILRU_CLIENT_SECRET
     // }),
     CredentialsProvider({
+      name: "credentials",
       credentials: {
         email: {},
         password: {},

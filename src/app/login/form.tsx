@@ -2,10 +2,13 @@
 
 import FormButton from "@/components/FormButton"
 import { signIn } from "next-auth/react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 const LoginForm = () => {
 
+    const [error, setError] = useState("")
     const router = useRouter()
 
     const handleSubmit = async (formData: FormData) => {
@@ -14,7 +17,7 @@ const LoginForm = () => {
         const password = formData.get("password"?.toString())
 
         if (!email || !password) {
-            throw Error("Не заполнены обзятельные поля")
+            setError("Не заполнены обзятельные поля")
         }
 
         const response = await signIn('credentials', {
@@ -24,7 +27,7 @@ const LoginForm = () => {
 
         })
 
-        console.log({response})
+        console.log({ response })
 
         if (!response?.error) {
             router.push("/")
@@ -41,7 +44,7 @@ const LoginForm = () => {
                 required
                 name="email"
                 className="input input-bordered w-full mb-3 max-w-xs"
-                placeholder="введите email"
+                placeholder="email"
                 type="email"
             />
 
@@ -49,12 +52,22 @@ const LoginForm = () => {
                 required
                 name="password"
                 className="input input-bordered w-full mb-3 max-w-xs"
-                placeholder="введите пароль"
+                placeholder="пароль"
                 type="password"
             />
 
+            {error && <div className="m-3 badge badge-error badge-lg">
+                {error}
+            </div>
+            }
 
-            <FormButton className="w-full max-w-xs">Войти</FormButton>
+            <div className="flex space-x-3">
+                <span className="">{`Don't have an account?`} </span>
+                <Link className="link-primary hover:underline font-semibold" href="/register"> Register</Link>
+
+            </div>
+
+            <FormButton className="w-full max-w-xs">Login</FormButton>
 
         </form>
     )
