@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { useRef, useState } from "react"
 
 
-const Form = () => {
+const RegisterForm = () => {
 
     const [nameValue, setNameValue] = useState("")
     const [emailValue, setEmailValue] = useState("")
@@ -135,4 +135,4 @@ const Form = () => {
 
 }
 
-export default Form
+export default RegisterForm

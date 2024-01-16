@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth"
-import LoginForm from "./form"
+import LoginForm from "@/components/LoginForm"
 import { redirect } from "next/navigation"
 
 const Login = async () => {
