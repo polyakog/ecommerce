@@ -118,7 +118,7 @@ const RegisterForm = () => {
 
             <FormButton className="w-full max-w-xs">Зарегистрировать</FormButton>
 
-            {error && <div className="m-3 badge badge-error badge-lg">
+            {error && <div className="m-3 badge bg-red-500 text-white text-sm py-1 px-3 rounded-md mt-2 h-auto">
                 {error}
             </div>
             }

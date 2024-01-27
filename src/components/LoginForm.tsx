@@ -8,42 +8,64 @@ import { useState } from "react"
 
 const LoginForm = () => {
 
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
     const [error, setError] = useState("")
     const router = useRouter()
 
-    const handleSubmit = async (formData: FormData) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
-        const email = formData.get("email"?.toString())
-        const password = formData.get("password"?.toString())
+        e.preventDefault()
+
+        // const email = formData.get("email"?.toString())
+        // const password = formData.get("password"?.toString())
 
         if (!email || !password) {
             setError("Не заполнены обзятельные поля")
         }
 
-        const response = await signIn('credentials', {
-            email: email,
-            password: password,
+        try {
+            
+            const response = await signIn('credentials', {
+            email,
+            password,
             redirect: false,
 
         })
 
-        console.log({ response })
+         
 
         if (!response?.error) {
-            router.push("/")
-            router.refresh()
+            
+           console.log("response:", { response })
+           
+           router.replace("/")
 
+        } else {
+            setError("Invalid Credentials")
+            return
         }
+
+        } catch (error ) {
+            console.log(error)
+        }
+
+    
+       
+
+        
+        
 
     }
 
     return (
 
         <div className="grid place-items-center">
-            <form className="flex flex-col gap-2 mx-auto " action={handleSubmit} >
+            <form className="flex flex-col gap-2 mx-auto " onSubmit={handleSubmit} >
 
             <input
                 required
+                onChange={(e)=>setEmail(e.target.value)}
                 name="email"
                 className="input input-bordered w-full mb-3 max-w-xs"
                 placeholder="email"
@@ -52,13 +74,14 @@ const LoginForm = () => {
 
             <input
                 required
+                onChange={(e)=>setPassword(e.target.value)}
                 name="password"
                 className="input input-bordered w-full mb-3 max-w-xs"
                 placeholder="пароль"
                 type="password"
             />
 
-            {error && <div className="m-3 badge badge-error badge-lg">
+            {error && <div className="m-3 badge bg-red-500 text-white text-sm py-1 px-3 rounded-md mt-2 h-auto">
                 {error}
             </div>
             }
