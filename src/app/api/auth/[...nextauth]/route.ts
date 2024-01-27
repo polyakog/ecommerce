@@ -8,20 +8,11 @@ import MailRuProvider from "next-auth/providers/mailru"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { env } from "@/lib/env"
 import { mergeAnonymousCartIntoUserCart } from "@/lib/db/cart"
-import { sql } from "@vercel/postgres"
 import { compare } from "bcrypt"
+import { useState } from "react"
 
 
-type UserType = {
-  id: string
-  email: string
-  password: string
-  name: string
-  role: string
-}
-const users: UserType[]  =[
-  {id: '1', email: 'gpolyakov77@yandex.ru', password: '123', name: 'Gennadij', role: 'admin'}
-]
+
 
 export const authOptions: NextAuthOptions = {
 
@@ -43,67 +34,86 @@ export const authOptions: NextAuthOptions = {
         password: {},
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials.password)return null
 
-        // const currentUser = users.find(user => user.email === credentials.email)
+        const email = credentials?.email as string
+        const password = credentials?.password as string
         
-        // if (currentUser && currentUser.password === credentials.password){
-        //   const {password, ...user} = currentUser
-
-        //   return user as User
-        // }
-
-        const response = await sql `
-        SELECT * FROM users WHERE email=${credentials.email}
-        `
-        const userResponse = response.rows[0]
-
-        const passwordCorrect = await compare(credentials.password, userResponse.password)
         
+console.log("recieve auth credentials in backend", email, password)
+        // try {
+          
+        //   const user = await prisma.user.findFirst({
+        //     where: {
+        //         email
+        //     }            
+        // })
 
-        if (passwordCorrect) {
-          const user = {
-                    id: userResponse.id,
-                    name: 'credential',
-                    email: userResponse.email,
-                    image: ''
-                  } as User
+        const user = {
+          id: "65a901655fe9f95804562010",
+          email: "pgv@gmail.com",
+          password: "$2b$10$jWHrX4nJcseB18/bjGaPbugJmjl2mM8YTVEP1FLoP.b6AT..JyNTi"
+          // password: undefined
+        }
 
-          console.log('correct password')
-          console.log('credentials', {credentials})
-          console.log('user', user)
+          console.log("recieve auth user", user) 
 
-          return user 
-          //           {
-          //   id: user.id,
-          //   email: user.email,
-          // }
+          if (!user) return null
+          if (email!==user.email) {
+            console.log("WRONG EMAIL")
+           return null 
+          }
+
+          if (user.password) {
+           const passwordMatch = await compare(password, user.password)
+           console.log("passwords", password, user.password)
+           console.log("passwordMatch", passwordMatch)
+           if (!passwordMatch) {
+            console.log("WRONG PASSWORD")
+            return null
+           }
+          } else {
+            console.log("add password to your account")
+            return null
+          }
+
+          
+         
+          
+          
+          return user                 
+               
+         
         }
         
 
-        
-        return null
-      }
+
     })
 
    ],
 
    session: {
-    strategy: "database",
+    strategy: "jwt",
 },
-   callbacks: {
-    session({session, user}) {
-        session.user.id = user.id
-        return session
-    },
+
+  secret: process.env.NEXTAUTH_SECRET,
+
+  //  callbacks: {
+  //   session({session, user}) {
+  //       session.user.id = user.id,
+        
+  //       console.log("SESSION", session)
+  //       return session
+  //   },
     
-   },
+  //  },
+
    events: {
     async signIn({ user }) {
        await mergeAnonymousCartIntoUserCart(user.id);
     },
     
   },
+
   // pages: {
   //   signIn: '/login'
   // }
