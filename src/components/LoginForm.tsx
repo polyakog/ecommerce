@@ -25,36 +25,36 @@ const LoginForm = () => {
         }
 
         try {
-            
+
             const response = await signIn('credentials', {
-            email,
-            password,
-            redirect: false,
+                email,
+                password,
+                redirect: false,
 
-        })
+            })
 
-         
 
-        if (!response?.error) {
-            
-           console.log("response:", { response })
-           
-           router.replace("/")
 
-        } else {
-            setError("Invalid Credentials")
-            return
-        }
+            if (!response?.error) {
 
-        } catch (error ) {
+                console.log("response:", { response })
+
+                router.refresh()
+
+            } else {
+                setError("Invalid Credentials")
+                return
+            }
+
+        } catch (error) {
             console.log(error)
         }
 
-    
-       
 
-        
-        
+
+
+
+
 
     }
 
@@ -63,40 +63,40 @@ const LoginForm = () => {
         <div className="grid place-items-center">
             <form className="flex flex-col gap-2 mx-auto " onSubmit={handleSubmit} >
 
-            <input
-                required
-                onChange={(e)=>setEmail(e.target.value)}
-                name="email"
-                className="input input-bordered w-full mb-3 max-w-xs"
-                placeholder="email"
-                type="email"
-            />
+                <input
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
+                    name="email"
+                    className="input input-bordered w-full mb-3 max-w-xs"
+                    placeholder="email"
+                    type="email"
+                />
 
-            <input
-                required
-                onChange={(e)=>setPassword(e.target.value)}
-                name="password"
-                className="input input-bordered w-full mb-3 max-w-xs"
-                placeholder="пароль"
-                type="password"
-            />
+                <input
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
+                    name="password"
+                    className="input input-bordered w-full mb-3 max-w-xs"
+                    placeholder="пароль"
+                    type="password"
+                />
 
-            {error && <div className="m-3 badge bg-red-500 text-white text-sm py-1 px-3 rounded-md mt-2 h-auto">
-                {error}
-            </div>
-            }
+                {error && <div className="m-3 badge bg-red-500 text-white text-sm py-1 px-3 rounded-md mt-2 h-auto">
+                    {error}
+                </div>
+                }
 
-            <div className="text-right">
-                <span className="">{`Don't have an account?`} </span>
-                <Link className="link-primary hover:underline font-semibold" href="/register"> Register</Link>
+                <div className="text-right">
+                    <span className="">{`Don't have an account?`} </span>
+                    <Link className="link-primary hover:underline font-semibold" href="/register"> Register</Link>
 
-            </div>
+                </div>
 
-            <FormButton className="w-full max-w-xs">Login</FormButton>
+                <FormButton className="w-full max-w-xs">Login</FormButton>
 
-        </form>
+            </form>
         </div>
-        
+
     )
 
 }
