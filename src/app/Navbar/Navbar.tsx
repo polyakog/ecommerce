@@ -50,7 +50,7 @@ const Navbar = async () => {
                     </form>
                     <ShoppingCartButton cart={cart} />
                     <UserMenuButton session={session} />
-                    {!session ?
+                    {/* {!session ?
                         <>
                             не залогинился
                             <Link href={"/login"}>
@@ -69,7 +69,7 @@ const Navbar = async () => {
                             />
                         </div>
 
-                    }
+                    } */}
                 </div>
             </div>
         </div>
