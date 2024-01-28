@@ -23,10 +23,17 @@ export const getCart = async (): Promise<ShoppingCartType | null> => {
     const session = await getServerSession(authOptions)
 
     let cart: CartWithProductsType | null = null 
+    
 
     if (session) {
+        // where: {userId: userId ?  userId : session.user.id},
+        const userId = cookies().get("userId")?.value
+        console.log ("userId from cookies FOR CART:", userId)
+        console.log ("session.user.id:", session.user.id)
+        
+
         cart = await prisma.cart.findFirst ({
-            where: {userId: session.user.id},
+            where: {userId: userId? userId : session.user.id},
             include: {items: {include: {product: true}}}
         })
 
@@ -62,7 +69,7 @@ export const createCart= async (): Promise<ShoppingCartType> => {
     if (session) {
         newCart = await prisma.cart.create({
             data: {userId: session.user.id }
-        })
+        })        
     } else {
         newCart = await prisma.cart.create({
         data: {}
@@ -83,14 +90,14 @@ export const createCart= async (): Promise<ShoppingCartType> => {
 
 export const mergeAnonymousCartIntoUserCart = async (userId: string) => {
     const localCartId = cookies().get("localCartId")?.value
-
     const localCart = localCartId 
     ? await prisma.cart.findUnique({
         where: {id: localCartId},
         include: {items: true}
         })
     : null
-   
+
+      
     if (!localCart) return;
 
     const userCart = await prisma.cart.findFirst({
@@ -102,7 +109,9 @@ export const mergeAnonymousCartIntoUserCart = async (userId: string) => {
         await prisma.$transaction(async (tx) =>{
             if (userCart) {
             const mergedCartItems = mergeCartItems(localCart.items, userCart.items)
-
+                console.log("localCart.items:", localCart.items)
+                console.log("userCart.items:", userCart.items)
+                console.log("mergedCartItems:", mergedCartItems)
         await tx.cartItem.deleteMany({
             where: { cartId: userCart.id },
         })
