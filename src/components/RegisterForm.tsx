@@ -8,10 +8,6 @@ import { useRef, useState } from "react"
 
 const RegisterForm = () => {
 
-    const [nameValue, setNameValue] = useState("")
-    const [emailValue, setEmailValue] = useState("")
-    const [passwordValue, setPasswordValue] = useState("")
-    const [repasswordValue, setRepasswordValue] = useState("")
     const [error, setError] = useState("")
 
     const rouster = useRouter()
@@ -58,19 +54,19 @@ const RegisterForm = () => {
 
             if (responce.ok) {
 
-                setNameValue("")
+
 
                 // formData.set("name", "df")
                 // formData.set("email", "")
                 // formData.set("password", "")
                 // formData.set("repassword", "")
-                formData.append("name", "")
+
                 setError("")
                 rouster.push('/login')
             } else {
-                console.log("User registration failed")
+                setError("User registration failed")
             }
-            console.log("responce form", { responce })
+            
 
         } catch (error) {
             console.log("Error during registration:", error)
