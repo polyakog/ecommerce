@@ -9,7 +9,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { env } from "@/lib/env"
 import { mergeAnonymousCartIntoUserCart } from "@/lib/db/cart"
 import { compare } from "bcrypt"
-import { useState } from "react"
+import { cookies } from "next/dist/client/components/headers"
 
 
 
@@ -39,54 +39,55 @@ export const authOptions: NextAuthOptions = {
         const password = credentials?.password as string
         
         
-console.log("recieve auth credentials in backend", email, password)
+console.log("1 recieved auth credentials in backend", email, password)
         // try {
           
-        //   const user = await prisma.user.findFirst({
-        //     where: {
-        //         email
-        //     }            
-        // })
+          const user = await prisma.user.findFirst({
+            where: {
+                email
+            }            
+        })
 
-        const user = {
-          id: "65a901655fe9f95804562010",
-          email: "pgv@gmail.com",
-          password: "$2b$10$jWHrX4nJcseB18/bjGaPbugJmjl2mM8YTVEP1FLoP.b6AT..JyNTi"
-          // password: undefined
-        }
+        // const user = {
+        //   id: "65b4fba29c5aa0e3b6a31fbe",
+        //   email: "gpolyakov77@yandex.ru",
+        //   password: "$2b$10$hD4vWfUNKm.nuvaOfa1F.euCHGpDOgMDeAJubvjP646WzWASzjXmG"
+        //   // password: undefined
+        // }
 
-          console.log("recieve auth user", user) 
+          console.log("2 recieved auth user", user) 
 
           if (!user) return null
           if (email!==user.email) {
-            console.log("WRONG EMAIL")
+            console.log("WRONG EMAIL!!!")
            return null 
           }
 
           if (user.password) {
            const passwordMatch = await compare(password, user.password)
-           console.log("passwords", password, user.password)
-           console.log("passwordMatch", passwordMatch)
-           if (!passwordMatch) {
-            console.log("WRONG PASSWORD")
+           console.log("passwords to match", password, user.password)
+           console.log("passwordMatch:", passwordMatch)
+
+          if (!passwordMatch) {
+            console.log("WRONG PASSWORD!!!")
             return null
+           } else {
+            console.log("userId", user.id)
+            cookies().set("userId", user.id)        
            }
+           
+           
+
           } else {
-            console.log("add password to your account")
+            console.log("Please add password to your account")
             return null
           }
 
-          
-         
-          
-          
+            
           return user                 
-               
-         
+                   
         }
         
-
-
     })
 
    ],
@@ -97,11 +98,22 @@ console.log("recieve auth credentials in backend", email, password)
 
   secret: process.env.NEXTAUTH_SECRET,
 
+  // callbacks:{
+  //   async jwt({ token, account, user}) {
+  //     if (account) {
+  //       token.accessToken = account.access_token
+  //       token.id = user.id
+  //     }
+  //     return token
+  //   }
+  // },
+
   //  callbacks: {
-  //   session({session, user}) {
-  //       session.user.id = user.id,
+  //   session({session, token, user}) {
+  //       // session.user.id = user.id,
+  //       session.user.id = user.id as string
         
-  //       console.log("SESSION", session)
+  //       // console.log("SESSION", session)
   //       return session
   //   },
     
@@ -111,6 +123,10 @@ console.log("recieve auth credentials in backend", email, password)
     async signIn({ user }) {
        await mergeAnonymousCartIntoUserCart(user.id);
     },
+
+    async signOut() {
+      cookies().set("userId", "") 
+    }
     
   },
 
