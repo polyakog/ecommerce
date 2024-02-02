@@ -21,19 +21,16 @@ export type ShoppingCartType = CartWithProductsType & {
 
 export const getCart = async (): Promise<ShoppingCartType | null> => {
     const session = await getServerSession(authOptions)
+  
 
     let cart: CartWithProductsType | null = null 
     
 
     if (session) {
-        // where: {userId: userId ?  userId : session.user.id},
-        const userId = cookies().get("userId")?.value
-        console.log ("userId from cookies FOR CART:", userId)
-        console.log ("session.user.id:", session.user.id)
-        
+                     
 
         cart = await prisma.cart.findFirst ({
-            where: {userId: userId? userId : session.user.id},
+            where: {userId: session.user.id},
             include: {items: {include: {product: true}}}
         })
 
@@ -64,6 +61,7 @@ export const getCart = async (): Promise<ShoppingCartType | null> => {
 
 export const createCart= async (): Promise<ShoppingCartType> => {
     const session = await getServerSession(authOptions)
+  
     let newCart: Cart
 
     if (session) {

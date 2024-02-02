@@ -48,13 +48,7 @@ console.log("1 recieved auth credentials in backend", email, password)
             }            
         })
 
-        // const user = {
-        //   id: "65b4fba29c5aa0e3b6a31fbe",
-        //   email: "gpolyakov77@yandex.ru",
-        //   password: "$2b$10$hD4vWfUNKm.nuvaOfa1F.euCHGpDOgMDeAJubvjP646WzWASzjXmG"
-        //   // password: undefined
-        // }
-
+      
           console.log("2 recieved auth user", user) 
 
           if (!user) return null
@@ -93,31 +87,22 @@ console.log("1 recieved auth credentials in backend", email, password)
    ],
 
    session: {
-    strategy: "jwt",
+    strategy: "jwt",    
 },
 
   secret: process.env.NEXTAUTH_SECRET,
 
-  // callbacks:{
-  //   async jwt({ token, account, user}) {
-  //     if (account) {
-  //       token.accessToken = account.access_token
-  //       token.id = user.id
-  //     }
-  //     return token
-  //   }
-  // },
-
-  //  callbacks: {
-  //   session({session, token, user}) {
-  //       // session.user.id = user.id,
-  //       session.user.id = user.id as string
+  callbacks:{
+    async session({ session, token}) {
+      if (token.sub) {
         
-  //       // console.log("SESSION", session)
-  //       return session
-  //   },
-    
-  //  },
+    session.user.id = token.sub
+     }
+      return session
+    }
+  },
+
+ 
 
    events: {
     async signIn({ user }) {
