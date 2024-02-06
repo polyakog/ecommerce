@@ -37,48 +37,42 @@ export const authOptions: NextAuthOptions = {
 
         const email = credentials?.email as string
         const password = credentials?.password as string
-        
-        
-console.log("1 recieved auth credentials in backend", email, password)
-        // try {
-          
-          const user = await prisma.user.findFirst({
+                
+        try {
+           const user = await prisma.user.findFirst({
             where: {
                 email
             }            
         })
 
-      
-          console.log("2 recieved auth user", user) 
-
-          if (!user) return null
-          if (email!==user.email) {
-            console.log("WRONG EMAIL!!!")
-           return null 
-          }
-
-          if (user.password) {
-           const passwordMatch = await compare(password, user.password)
-           console.log("passwords to match", password, user.password)
-           console.log("passwordMatch:", passwordMatch)
-
-          if (!passwordMatch) {
-            console.log("WRONG PASSWORD!!!")
-            return null
-           } else {
-            console.log("userId", user.id)
-            cookies().set("userId", user.id)        
-           }
-           
-           
-
-          } else {
-            console.log("Please add password to your account")
-            return null
-          }
+            if (!user) return null
 
             
-          return user                 
+              const passwordMatch = await compare(password, user.password!)
+             //  console.log("passwords to match", password, user.password)
+             //  console.log("passwordMatch:", passwordMatch)
+   
+             if (!passwordMatch) {
+               // console.log("WRONG PASSWORD!!!")
+               return null
+              } 
+             //  else {
+             //   console.log("userId", user.id)
+             //   cookies().set("userId", user.id)        
+             //  }
+             console.log("user in route:", user)
+             return user  
+                
+
+
+        } catch (error) {
+
+          console.log("error in credentials:", error)
+        }   
+          
+        
+        return null  
+   
                    
         }
         
@@ -110,14 +104,14 @@ console.log("1 recieved auth credentials in backend", email, password)
     },
 
     async signOut() {
-      cookies().set("userId", "") 
+      // cookies().set("userId", "") 
     }
     
   },
 
-  // pages: {
-  //   signIn: '/login'
-  // }
+  pages: {
+    signIn: '/login'
+  }
   
 }
 
