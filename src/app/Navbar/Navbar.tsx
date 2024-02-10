@@ -50,26 +50,7 @@ const Navbar = async () => {
                     </form>
                     <ShoppingCartButton cart={cart} />
                     <UserMenuButton session={session} />
-                    {/* {!session ?
-                        <>
-                            не залогинился
-                            <Link href={"/login"}>
-                                залогиниться
-                            </Link>
-                        </>
-
-                        :
-                        <div className="shadow rounded-md">
-                            залогинился
-                            <Image
-                                alt="Mozoni logo"
-                                src={session.user.image!}
-                                height={20}
-                                width={20}
-                            />
-                        </div>
-
-                    } */}
+                    
                 </div>
             </div>
         </div>
