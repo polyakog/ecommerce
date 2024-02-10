@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import {hash} from 'bcrypt'
-import { sql } from "@vercel/postgres"
+
 import { prisma } from "@/lib/db/prisma"
 
 
@@ -14,10 +14,6 @@ export const POST =async (request: Request) => {
         const hashedPassword = await hash(password, 10)
         console.log('post request:', {name, email, hashedPassword})
         
-//         const responce = await sql`
-// INSERT INTO users (email, password)
-// VALUES (${email}, ${hashedPassword})
-// `
 
 await prisma.user.create({
     data: {name, email, password: hashedPassword}
