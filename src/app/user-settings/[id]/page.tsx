@@ -9,7 +9,7 @@ export const metadata = {
     title: "Насторойки пользователя - Mozoni"
 }
 
-type ProductPropsType = {
+type UserPropsType = {
     params: {
         id: string
     }
@@ -17,7 +17,7 @@ type ProductPropsType = {
 }
 
 
-const UserSettings = async ({ params: { id } }: ProductPropsType) => {
+const UserSettings = async ({ params: { id } }: UserPropsType) => {
 
     const session = await getServerSession(authOptions)
     // const user = await prisma.user.findFirst({
