@@ -21,10 +21,14 @@ export type ShoppingCartType = CartWithProductsType & {
 
 export const getCart = async (): Promise<ShoppingCartType | null> => {
     const session = await getServerSession(authOptions)
+  
 
     let cart: CartWithProductsType | null = null 
+    
 
     if (session) {
+                     
+
         cart = await prisma.cart.findFirst ({
             where: {userId: session.user.id},
             include: {items: {include: {product: true}}}
@@ -57,12 +61,13 @@ export const getCart = async (): Promise<ShoppingCartType | null> => {
 
 export const createCart= async (): Promise<ShoppingCartType> => {
     const session = await getServerSession(authOptions)
+  
     let newCart: Cart
 
     if (session) {
         newCart = await prisma.cart.create({
             data: {userId: session.user.id }
-        })
+        })        
     } else {
         newCart = await prisma.cart.create({
         data: {}
@@ -83,14 +88,14 @@ export const createCart= async (): Promise<ShoppingCartType> => {
 
 export const mergeAnonymousCartIntoUserCart = async (userId: string) => {
     const localCartId = cookies().get("localCartId")?.value
-
     const localCart = localCartId 
     ? await prisma.cart.findUnique({
         where: {id: localCartId},
         include: {items: true}
         })
     : null
-   
+
+      
     if (!localCart) return;
 
     const userCart = await prisma.cart.findFirst({
@@ -102,7 +107,9 @@ export const mergeAnonymousCartIntoUserCart = async (userId: string) => {
         await prisma.$transaction(async (tx) =>{
             if (userCart) {
             const mergedCartItems = mergeCartItems(localCart.items, userCart.items)
-
+                console.log("localCart.items:", localCart.items)
+                console.log("userCart.items:", userCart.items)
+                console.log("mergedCartItems:", mergedCartItems)
         await tx.cartItem.deleteMany({
             where: { cartId: userCart.id },
         })

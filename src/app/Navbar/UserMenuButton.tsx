@@ -12,6 +12,13 @@ type UserMenuButtonPropsType = {
 
 const UserMenuButton = ({ session }: UserMenuButtonPropsType) => {
     const user = session?.user
+
+    const closeDropdown =() => {
+        const elem = document.activeElement as HTMLElement
+        if (elem) {elem.blur()}
+        
+            }
+
     return (
         <div className="dropdown dropdown-end">
             <label
@@ -48,13 +55,24 @@ const UserMenuButton = ({ session }: UserMenuButtonPropsType) => {
                 tabIndex={0}
                 className="dropdown-content menu rounded-box menu-sm z-30 mt-3 w-52 bg-base-100 p-2 shadow"
             >
+                <li className="">
+                    <Link
+                        href={`/user-settings/${user?.id}`}
+                        className=""
+                        onClick={closeDropdown}
+                        tabIndex={0}
+                    >
+                        Профиль
+                    </Link>
+                </li>
                 <li className={user?.email !== "gpolyakov77@gmail.com" ? "disabled" : ""}>
                     <Link
                         href={"/admin"}
                         className={user?.email !== "gpolyakov77@gmail.com" ? "pointer-events-none" : ""}
+                        onClick={closeDropdown}
                         tabIndex={0}
                     >
-                        Настройки
+                        Панель администратора
                     </Link>
                 </li>
                 <li>

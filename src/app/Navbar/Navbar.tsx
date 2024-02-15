@@ -40,16 +40,21 @@ const Navbar = async () => {
                 </div>
                 <div className="flex-none gap-2">
                     <form action={searchProduct}>
-                        <div className="form-control">
+                        <div className="flex relative">
                             <input
                                 name="searchQuery"
                                 placeholder="Искать"
                                 className="input input-bordered w-full min-w-[100px]"
                             />
+                            <button className="btn btn-ghost btn-circle absolute right-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                            </button>
                         </div>
+
                     </form>
                     <ShoppingCartButton cart={cart} />
                     <UserMenuButton session={session} />
+
                 </div>
             </div>
         </div>
