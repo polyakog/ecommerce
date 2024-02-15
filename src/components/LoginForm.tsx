@@ -3,13 +3,14 @@
 import FormButton from "@/components/FormButton"
 import { signIn } from "next-auth/react"
 import Link from "next/link"
-import { useParams, useRouter, useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import PasswordHintModal from "./PasswordHintModal"
 import Image from 'next/image';
 import Yandex from "../../public/images/Yandex_Browser_logo.svg"
 import Mailru from "../../public/images/Mailru_logo.svg"
 import useOauthError, { ErrorNameType } from "@/hooks/useOauthError"
+import ErrorModal from "./ErrorModal"
 
 
 const LoginForm = () => {
@@ -23,15 +24,12 @@ const LoginForm = () => {
     const [error, setError] = useState("")
     const [hint, setHint] = useState("")
     const [isModal, setIsModal] = useState(false)
+    const [isErrorModal, setIsErrorModal] = useState(false)
     const router = useRouter()
     const [pending, setPending] = useState(false)
 
       useEffect(()=>{
-        setError(oauthError!)
-        setTimeout(() => {
-            router.push("/login")
-        }, 3000);
-
+        if (oauthError) setIsErrorModal(true)
       }, [oauthError])
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -85,7 +83,6 @@ const LoginForm = () => {
 
 
             if (!response?.error) {
-                // console.log("response:", { response })
                 router.refresh()
 
             } else {
@@ -135,7 +132,7 @@ const LoginForm = () => {
                 />
 
                 {error &&
-                    <div className="m-3 badge bg-red-500 text-white text-sm py-1 px-3 rounded-md mt-2 h-auto flex-col">
+                    <div className="badge bg-red-500 text-white text-sm py-1 px-3 rounded-md mt-2 h-auto flex-col w-full mb-3 max-w-xs">
                         {error}
                         {hint &&
                             <div onClick={handleHint} className="badge cursor-pointer">{hint}</div>
@@ -219,6 +216,9 @@ const LoginForm = () => {
             </form>
             {isModal &&
                 <PasswordHintModal setIsModal={setIsModal} />
+            }
+            {isErrorModal &&
+                <ErrorModal setIsErrorModal={setIsErrorModal} errorText={oauthError} />
             }
 
         </div>
