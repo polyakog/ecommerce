@@ -17,25 +17,34 @@ export const NewUser = ({ session }: NewUserType) => {
 
 
     return (
-        <div className="hero min-h-screen bg-base-200 ">
+        <div className="hero rounded-xl bg-base-200 ">
             <div className="hero-content text-center flex-col lg:flex-row">
-                <Image
-                    priority
-                    src={session?.user.image || logo}
-                    className="rounded-lg shadow-2xl p-1 
-            h-[70px] w-[auto] 
-            sm:h-[100px] sm:w-[auto] 
-            lg:h-[300px] lg:w-[auto]"
-                    width={100}
-                    height={100}
-                    alt="Avatar"
-                />
+                <button
+                    className="mask mask-squircle"
+                    tabIndex={0}
+                    onClick={() => router.push(`/user-settings/${session?.user.id}`)}
+                >
+                    <Image
+                        priority
+                        src={session?.user.image || logo}
+                        className=" shadow-2xl h-[70px] sm:h-[100px] lg:h-[200px]
+                        w-auto
+                        "
+                        /* rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 */
+                        width={100}
+                        height={100}
+                        alt="Avatar"
+                    />
+
+                </button>
+
                 <div className="max-w-md">
                     <h1 className="text-2xl sm:text-4xl font-bold">{session?.user.name}, добро пожаловать на сайт Mozoni!</h1>
                     <p className="py-6 sm:text-lg">Вы стали нашим новым пользователем.</p>
-                    <p className="py-6 sm:text-lg mt-[-30px] mb-5">Давайте начнем с краткого обзора продуктов, что быстро сделать покупки!</p>
+                    <p className="py-6 sm:text-lg mt-[-30px] mb-5">Давайте начнем с краткого обзора продуктов, чтобы быстро сделать покупки!</p>
 
                     <button
+                        tabIndex={0}
                         className="btn btn-primary"
                         onClick={() => router.push("/")}
                     >
