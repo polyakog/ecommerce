@@ -23,17 +23,21 @@ const UserMenuButton = ({ session }: UserMenuButtonPropsType) => {
         <div className="dropdown dropdown-end">
             <label
                 tabIndex={0}
-                className="btn btn-ghost btn-circle"
+                className=" btn btn-ghost btn-circle"
                 htmlFor="">
                 {user ? (
-                    <Image
+                    <div className="mask mask-circle">
+                        <Image
+                        priority
                         alt="Profile picture"
                         src={user.image || profilePicPlaceholder}
-                        className="w-10 rounded-full"
+                        className="w-fit"
                         height={40}
                         width={40}
 
                     />
+                    </div>
+                    
                 ) : (
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
