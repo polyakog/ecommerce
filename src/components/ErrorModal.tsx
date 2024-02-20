@@ -19,10 +19,10 @@ const ErrorModal = ({ setIsErrorModal, errorText }: PropsType) => {
     return (
         <>
             <div
-                className="overscroll-contain opacity-70 inset-0 h-screen w-screen m-0 overflow-y-hidden backdrop-blur-sm z-[99] fixed"
+                className="overscroll-contain opacity-70  bg-black/50 inset-0 h-screen w-screen p-0 overflow-y-hidden backdrop-blur-sm z-[99] fixed"
             />
 
-            <div className="z-[100] bg-black/50 ml-0 fixed flex-wrap text-inherit  h-[120%] max-h-none w-[100%] max-w-none flex justify-center content-center">
+            <div className="z-[100] flex-wrap flex justify-center fixed top-4">
                 {/* <dialog className="modal"> */}
                 <div className="modal-box h-auto">
 
