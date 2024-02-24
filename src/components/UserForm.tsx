@@ -9,6 +9,7 @@ import { User } from "@prisma/client"
 import settings from "../../public/images/settings.svg"
 import editAvatar from "../../public/images/modify_image.svg"
 import { now } from "next-auth/client/_utils"
+import { EditAvatarModal } from "./EditAvatarModal"
 
 
 type UserFormProps = {
@@ -28,7 +29,7 @@ const UserForm = ({ sessionUserId, user }: UserFormProps) => {
     const [error, setError] = useState("")
     const [pending, setPending] = useState(false)
     // const [hint, setHint] = useState("")
-    // const [isModal, setIsModal] = useState(false)
+    const [isEditAvatarModal, setIsEditAvatarModal] = useState(false)
     const router = useRouter()
 
     const [editable, setEditable] = useState(false)
@@ -46,8 +47,11 @@ const UserForm = ({ sessionUserId, user }: UserFormProps) => {
 
 
 
-    const handleEdit = () => {
+    const handleEditProfile = () => {
         setEditable(!editable)
+    }
+    const handleEditAvatar = () => {
+        setIsEditAvatarModal(!isEditAvatarModal)
     }
 
 
@@ -95,21 +99,33 @@ const UserForm = ({ sessionUserId, user }: UserFormProps) => {
                         <div className="h-[50px] sm:h-[100px] lg:h-[200px] rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 z-10">
                             <Image
                                 priority
-                                alt="User image"
+                                alt="User avatar"
                                 src={image || profilePicPlaceholder}
                                 height={200}
                                 width={200}
                             />
                         </div>
                     </div>
-                    <button className="indicator-item indicator-top indicator-start btn btn-circle ml-[-12px]">
-                        <Image
-                            priority
-                            alt="Edit avatar"
-                            src={editAvatar}
-                            className="h-[25px] sm:h-[30px] lg:h-[35px]"
-                        />
-                    </button>
+
+                    {isProfileOner &&
+                        <div
+                            className="indicator-item indicator-top indicator-start ml-[-12px]"
+                        >
+                            <button
+                                className="btn btn-circle"
+                                onClick={handleEditAvatar}
+                            >
+                                <Image
+                                    priority
+                                    alt="Edit avatar"
+                                    src={editAvatar}
+                                    className="h-[25px] sm:h-[30px] lg:h-[35px]"
+                                />
+                            </button>
+                        </div>
+                    }
+
+
 
                 </div>
 
@@ -118,13 +134,13 @@ const UserForm = ({ sessionUserId, user }: UserFormProps) => {
 
 
             <div className=" grid h-auto  flex-grow card bg-base-300 rounded-box place-items-center">
-
                 <div className="indicator p-5">
+
                     {isProfileOner &&
                         <div className="indicator-item">
                             <button
                                 className="btn btn-circle"
-                                onClick={handleEdit}
+                                onClick={handleEditProfile}
 
                             >
                                 <Image
@@ -141,26 +157,6 @@ const UserForm = ({ sessionUserId, user }: UserFormProps) => {
                     }
 
                     <form className="flex flex-col gap-2 mx-auto " onSubmit={handleSubmit} >
-
-                        <input
-                            name="imageFile"
-                            type="file"
-                            className="file-input file-input-bordered w-full max-w-xs"
-                        />
-
-                        <input
-                            name="image"
-                            value={image as string}
-                            onChange={(e) => {
-                                setImage(e.target.value)
-                                setError("")
-                            }}
-                            className={
-                                "input input-bordered w-full mb-3 max-w-xs " +
-                                (!editable ? "input-disabled pointer-events-none " : "")}
-                            placeholder="image"
-                            type="text"
-                        />
 
                         <input
                             required
@@ -219,10 +215,7 @@ const UserForm = ({ sessionUserId, user }: UserFormProps) => {
                                     </FormButton>
                                     <button onClick={() => router.back()} type="reset" className="btn btn-primary join-item w-[50%]">Отменить</button>
                                 </div>
-
                             </>
-
-
                         }
 
                     </form>
@@ -230,6 +223,12 @@ const UserForm = ({ sessionUserId, user }: UserFormProps) => {
 
 
             </div>
+
+            {isEditAvatarModal &&
+            // image, setImage, setIsEditAvatarModal, setError
+
+                <EditAvatarModal image={image} setImage={setImage} setIsEditAvatarModal={setIsEditAvatarModal} setError={setError} />
+            }
 
 
 
